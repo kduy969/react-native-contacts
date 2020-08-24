@@ -1310,9 +1310,21 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
             Context ctx = getReactApplicationContext();
             ContentResolver cr = ctx.getContentResolver();
             ContactsProvider contactsProvider = new ContactsProvider(cr);
-            WritableMap newlyModifiedContact = contactsProvider.getContactById(contactUri.getLastPathSegment());
-            if (newlyModifiedContact == null)
+//            WritableMap newlyModifiedContact = contactsProvider.getContactById(contactUri.getLastPathSegment());
+//            if (newlyModifiedContact == null)
+//                newlyModifiedContact = contactsProvider.getContactByRawId(contactUri.getLastPathSegment());
+
+            WritableMap newlyModifiedContact;
+            if (isRawContactUri)
                 newlyModifiedContact = contactsProvider.getContactByRawId(contactUri.getLastPathSegment());
+            else
+                newlyModifiedContact = contactsProvider.getContactById(contactUri.getLastPathSegment());
+
+            if (newlyModifiedContact == null){
+                updateContactCallback.invoke("Error wrong data. No contact found!", null); // something was wrong
+                updateContactCallback = null;
+                return;
+            }
 
             updateContactCallback.invoke(null, newlyModifiedContact); // success
         } catch (Exception e) {
