@@ -1311,6 +1311,8 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
             ContentResolver cr = ctx.getContentResolver();
             ContactsProvider contactsProvider = new ContactsProvider(cr);
             WritableMap newlyModifiedContact = contactsProvider.getContactById(contactUri.getLastPathSegment());
+            if (newlyModifiedContact == null)
+                newlyModifiedContact = contactsProvider.getContactByRawId(contactUri.getLastPathSegment());
 
             updateContactCallback.invoke(null, newlyModifiedContact); // success
         } catch (Exception e) {
