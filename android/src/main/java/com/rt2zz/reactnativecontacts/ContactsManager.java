@@ -1314,6 +1314,7 @@ public class ContactsManager extends ReactContextBaseJavaModule implements Activ
 //            if (newlyModifiedContact == null)
 //                newlyModifiedContact = contactsProvider.getContactByRawId(contactUri.getLastPathSegment());
 
+            final boolean isRawContactUri = contactUri.getPath().contains("raw_contacts");
             WritableMap newlyModifiedContact;
             if (isRawContactUri)
                 newlyModifiedContact = contactsProvider.getContactByRawId(contactUri.getLastPathSegment());
